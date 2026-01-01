@@ -19,6 +19,11 @@ public class ProjectContext:DbContext
     public DbSet<Address> Addresses { get; set; }
     public DbSet<UserCart> UserCarts { get; set; }
     public DbSet<UserCartItem> UserCartItems { get; set; }
+    public DbSet<UserOtp> UserOtps { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -44,6 +44,11 @@ public class CartRepository : ICartRepository
             .Include(x => x.Product)
             .FirstOrDefaultAsync(x => x.Id == cartItemId);
     }
+    public async Task ClearCartAsync(UserCart cart)
+    {
+        _context.UserCartItems.RemoveRange(cart.CartItems);
+        await _context.SaveChangesAsync();
+    }
 
     public async Task RemoveItemAsync(UserCartItem item)
     {

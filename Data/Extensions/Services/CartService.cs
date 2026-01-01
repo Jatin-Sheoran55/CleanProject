@@ -28,10 +28,10 @@ public class CartService : ICartService
         return MapToResponse(cart);
     }
 
-    public async Task<CartResponseDto> AddToCartAsync(AddToCartDto dto)
+    public async Task<CartResponseDto> AddToCartAsync(int userId, AddToCartDto dto)
     {
-        var cart = await _cartRepo.GetCartByUserIdAsync(dto.UserId)
-                   ?? await _cartRepo.CreateCartAsync(dto.UserId);
+        var cart = await _cartRepo.GetCartByUserIdAsync(userId)
+                   ?? await _cartRepo.CreateCartAsync(userId);
 
         var product = await _productRepo.GetByIdAsync(dto.ProductId);
         if (product == null) throw new Exception("Product not found");
@@ -54,10 +54,9 @@ public class CartService : ICartService
             });
         }
 
-        cart = await _cartRepo.GetCartByUserIdAsync(dto.UserId);
+        cart = await _cartRepo.GetCartByUserIdAsync(userId);
         return MapToResponse(cart);
     }
-
     public async Task UpdateQuantityAsync(int cartItemId, UpdateCartItemDto dto)
     {
         var item = await _cartRepo.GetCartItemAsync(cartItemId);
@@ -90,5 +89,5 @@ public class CartService : ICartService
                 Quantity = ci.Quantity
             }).ToList()
         };
-    }
+    }  
 }
