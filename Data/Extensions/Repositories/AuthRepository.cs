@@ -22,7 +22,7 @@ public class AuthRepository : IAuthRepository
         return otp;
     }
 
-    public async Task<UserOtp?> GetValidOtpAsync(int userId, string otp)
+    public async Task<UserOtp?> GetValidOtpAsync(int userId, int otp)
     {
         return await _context.UserOtps
           .FirstOrDefaultAsync(x =>

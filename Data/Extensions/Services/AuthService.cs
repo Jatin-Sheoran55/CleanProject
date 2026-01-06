@@ -56,7 +56,7 @@ public class AuthService : IAuthService
         if (user == null)
             return false;
 
-        var otp = new Random().Next(100000, 999999).ToString();
+        var otp = new Random().Next(100000, 999999);
 
         await _authRepo.CreateOtpAsync(new UserOtp
         {

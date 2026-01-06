@@ -24,6 +24,8 @@ namespace CleanProject.Controllers.Auths
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             var result = await _service.LoginAsync(dto);
 
             if (result == null)
