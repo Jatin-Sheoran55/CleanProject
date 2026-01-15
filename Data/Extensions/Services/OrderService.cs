@@ -20,7 +20,7 @@ public class OrderService : IOrderService
         _cartRepo = cartRepo;
     }
 
-    public async Task<OrderResponseDto> PlaceOrderAsync(int userId, string address)
+    public async Task<OrderResponseDto> PlaceOrderAsync(int userId, int tableNo)
     {
         var cart = await _cartRepo.GetCartByUserIdAsync(userId);
 
@@ -30,7 +30,8 @@ public class OrderService : IOrderService
         var order = new Order
         {
             UserId = userId,
-            DeliveryAddress = address,
+            TableNo = tableNo,
+            
             Items = cart.CartItems.Select(ci => new OrderItem
             {
                 ProductId = ci.ProductId,
@@ -42,12 +43,13 @@ public class OrderService : IOrderService
         order.TotalAmount = order.Items.Sum(x => x.Price * x.Quantity);
 
         await _orderRepo.CreateAsync(order);
-
-       
         await _cartRepo.ClearCartAsync(cart);
 
         return Map(order);
     }
+
+
+
 
 
     public async Task CancelOrderAsync(int orderId)
@@ -77,9 +79,10 @@ public class OrderService : IOrderService
         return new OrderResponseDto
         {
             OrderId = order.Id,
+            TableNo = order.TableNo,
             OrderDate = order.OrderDate,
             Status = order.Status,
-            DeliveryAddress = order.DeliveryAddress,
+            
             TotalAmount = order.TotalAmount,
             Items = order.Items.Select(i => new OrderItemResponseDto
             {

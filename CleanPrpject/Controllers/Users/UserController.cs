@@ -125,7 +125,7 @@ namespace CleanProject.Controllers.Users
 
 
         [HttpPut("address/{id}")]
-        public async Task<IActionResult> UpdateAddress(int id, UpdateAddressDto dto)
+        public async Task<IActionResult> UpdateAddress(int id,[FromBody] UpdateAddressDto dto)
         {
             var result = await _addressService.UpdateAsync(id, dto); 
 

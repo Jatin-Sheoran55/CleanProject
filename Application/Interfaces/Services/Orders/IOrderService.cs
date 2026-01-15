@@ -6,7 +6,9 @@ namespace Application.Interfaces.Services.Orders;
 
 public interface IOrderService
 {
-    Task<OrderResponseDto> PlaceOrderAsync(int userId, string address);
+    Task<OrderResponseDto> PlaceOrderAsync(int userId, int tableNo);
+
+
     Task<List<OrderResponseDto>> GetUserOrdersAsync(int userId);
     Task UpdateStatusAsync(int orderId, string status);
     Task CancelOrderAsync(int orderId);

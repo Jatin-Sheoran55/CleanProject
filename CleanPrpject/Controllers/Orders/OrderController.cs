@@ -1,8 +1,12 @@
-﻿using Application.Dto.Orders;
+﻿using System.Security.Claims;
+using Application.Dto.Orders;
 using Application.Interfaces.Services.Orders;
+using Infrastructure.Extensions.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
 
 namespace CleanProject.Controllers.Orders
 {
@@ -17,20 +21,33 @@ namespace CleanProject.Controllers.Orders
             _service = service;
         }
 
-        [HttpPost("place")]
-        public async Task<IActionResult> PlaceOrder(CreateOrderDto dto)
-        {
-            var result = await _service.PlaceOrderAsync(dto.UserId, dto.DeliveryAddress);
-            return Ok(result);
-        }
 
-        [HttpGet("user/{userId}")]
+
+
+
+
+
+      
+
+[Authorize]
+    [HttpPost("place")]
+    public async Task<IActionResult> PlaceOrder(CreateOrderDto dto)
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var result = await _service.PlaceOrderAsync(userId, dto.TableNo);
+        return Ok(result);
+    }
+
+
+
+
+    [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserOrders(int userId)
         {
             return Ok(await _service.GetUserOrdersAsync(userId));
         }
 
-        [Authorize(Roles = "Admin")]
+       
         [HttpPut("{orderId}/status")]
         public async Task<IActionResult> UpdateStatus(int orderId, UpdateOrderStatusDto dto)
         {
